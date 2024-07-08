@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <link rel="stylesheet" href="query.css">
+</head>
+
+<body>
+
+    <form id="myForm">
+        <input type="text" id="inputText" name="inputText" placeholder="Enter the user-id">
+        <button type="submit" id="button">Retrieve Data</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const userID = document.getElementById('inputText').value;
+
+            fetch(`query.php?id=${userID}`)
+                .then(response => response.json())
+                .then(data => {
+                    const result = document.getElementById('result');
+                    if (data.error) {
+                        result.innerHTML = `<p>${data.error}</p>`;
+                    } else {
+                        result.innerHTML = `
+                        <table>
+			  <thead>
+   				 <tr>
+      				<th>First Name</th>
+      				<th>Last Name</th>
+      				<th>Email</th>
+      				<th>Phone</th>
+      <th>City</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>${data.first_name}</td>
+      <td>${data.last_name}</td>
+      <td>${data.email}</td>
+      <td>${data.phone}</td>
+      <td>${data.city}</td>
+    </tr>
+  </tbody>
+</table>
+			`;
+                    }
+                });
+        });
+    </script>
+
+</body>
+
+</html>
